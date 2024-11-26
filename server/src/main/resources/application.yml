@@ -1,8 +1,13 @@
 server:
   port: 18080
+  log:
+    path: logs
 jasypt:
   encryptor:
     bean: jasyptStringEncryptor
     property:
       prefix: ENC(
       suffix: )
+logging:
+  level:
+    root: INFO

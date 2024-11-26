@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.happytodo.domain.todo.dao.TodoDaoJdbc">
+    <select id="findAllDomain" resultType="net.happytodo.domain.todo.dto.Todo$Domain">
+        select dmn.id,
+               dmn.user_id,
+               dmn.title,
+               dmn.content,
+               dmn.status as statusCode,
+               s.description as statusName,
+               dmn.create_dt,
+               dmn.update_dt
+        from todo_domain dmn
+            inner join status s on dmn.status = s.id and s.type = 'todo'
+        where dmn.is_del = 0
+    </select>
+</mapper>

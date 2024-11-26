@@ -43,6 +43,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -61,6 +62,10 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.go.formatter.settings.were.checked": "true",
@@ -82,7 +87,13 @@
     ]
   }
 }]]></component>
-  <component name="RunManager" selected="Gradle.JasyptTest.jasyptTest">
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="net.happytodo.domain.todo.dao" />
+      <recent name="net.happytodo.domain.todo.service" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Spring Boot.HappyTodoApplication">
     <configuration name="JasyptTest.jasyptTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -109,7 +120,8 @@
     <configuration name="HappyTodoApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <option name="ACTIVE_PROFILES" value="local" />
       <module name="server.main" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="net.happykoo.todo.HappyTodoApplication" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="net.happytodo.HappyTodoApplication" />
+      <option name="VM_PARAMETERS" value="-Djasypt.encryptor.password=Happy1234@@" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -132,7 +144,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1732455899330</updated>
-      <workItem from="1732455900464" duration="5516000" />
+      <workItem from="1732455900464" duration="13913000" />
     </task>
     <servers />
   </component>

@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <springProperty name="LOG_PATH_NAME" source="server.log.path"/>
+    <logger name="org.mybatis" level="INFO" />
+    <logger name="org.mybatis.spring" level="INFO" />
+    <logger name="org.mybatis.logging.jdbc" level="INFO" />
+    <logger name="jdbc.sqlonly" level="INFO" />
+    <logger name="jdbc.resultsettable" level="INFO" />
+    <logger name="jdbc.params" level="INFO" />
 
-    <logger name="org.apache.ibatis" level="DEBUG" />
-    <logger name="jdbc.sqlonly" level="DEBUG" />
-    <logger name="jdbc.resultsettable" level="TRACE" />
-    <logger name="jdbc.params" level="TRACE" />
     <!-- 콘솔 로그 설정 -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>

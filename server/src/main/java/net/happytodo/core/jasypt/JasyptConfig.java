@@ -1,4 +1,4 @@
-package net.happykoo.todo.core.jasypt;
+package net.happytodo.core.jasypt;
 
 
 import org.jasypt.encryption.StringEncryptor;

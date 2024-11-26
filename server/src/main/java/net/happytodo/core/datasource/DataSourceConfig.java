@@ -1,6 +1,7 @@
-package net.happykoo.todo.core.datasource;
+package net.happytodo.core.datasource;
 
 import com.zaxxer.hikari.HikariDataSource;
+import org.apache.ibatis.logging.slf4j.Slf4jImpl;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
@@ -33,7 +34,7 @@ public class DataSourceConfig {
 
         sqlSessionFactoryBean.setDataSource(dataSource);
         sqlSessionFactoryBean.setConfiguration(getMybatisConfig());
-        sqlSessionFactoryBean.setTypeAliasesPackage("net.happykoo.todo.domain.**.dto");
+        sqlSessionFactoryBean.setTypeAliasesPackage("net.happytodo.domain.**.dto");
 
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         Resource[] resource = resolver.getResources("mybatis/**/*.xml");
