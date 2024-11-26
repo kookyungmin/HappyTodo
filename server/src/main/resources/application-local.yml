@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    hikari:
+      driver-class-name: ENC(SvMnXnQtxQA4afBgjygzRhjALRBjLpu63VCc2pPXZL/9qvhdMTeyS4DyhROsC3lj)
+      jdbc-url: ENC(0zRu+vExvHkzw7OaOQDsahzBlB7k7rjE431Wr4MiwH+mpQK/Jdc7oZLc1ol8lbZX8mrgn/8EXwU=)
+      username: ENC(Cu4BQM9b2mzbx65guB7C/n1HcNHQuVJcechtD0T2tjk=)
+      password: ENC(jXAp0z60iYVluFgN1h/yRZxMSvQlGb9mfbaPXdDAlZ4=)
+      maximum-pool-size: 5
+server:
+  log:
+    path: logs

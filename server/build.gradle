@@ -1,0 +1,55 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.3.4'
+    id 'io.spring.dependency-management' version '1.1.6'
+}
+
+group = 'net.happykoo'
+version = '1.0-SNAPSHOT'
+
+test {
+    useJUnitPlatform()
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    lombok = "org.projectlombok"
+    boot = "org.springframework.boot"
+}
+
+dependencies {
+    compileOnly "${lombok}:lombok"
+    annotationProcessor "${lombok}:lombok"
+
+    implementation "${boot}:spring-boot-starter-web"
+    implementation "${boot}:spring-boot-starter-jdbc"
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
+    implementation 'commons-io:commons-io:2.10.0'
+    implementation 'org.apache.commons:commons-lang3:3.10'
+    implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.5'
+    implementation 'mysql:mysql-connector-java:8.0.33'
+
+    testCompileOnly "${lombok}:lombok"
+    testAnnotationProcessor "${lombok}:lombok"
+    testImplementation "${boot}:spring-boot-starter-test"
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

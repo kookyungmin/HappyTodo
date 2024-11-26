@@ -1,0 +1,8 @@
+server:
+  port: 18080
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+    property:
+      prefix: ENC(
+      suffix: )
