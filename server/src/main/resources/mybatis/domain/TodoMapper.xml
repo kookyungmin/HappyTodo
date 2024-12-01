@@ -33,7 +33,7 @@
         update todo_domain
         set title = #{title},
             content = #{content},
-            status = #{status},
+            status = #{statusCode},
             update_dt = now()
         where id = #{id}
     </update>
