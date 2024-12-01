@@ -43,6 +43,7 @@ dependencies {
     implementation 'org.apache.commons:commons-lang3:3.10'
     implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.5'
     implementation 'mysql:mysql-connector-java:8.0.33'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
 
     testCompileOnly "${lombok}:lombok"
     testAnnotationProcessor "${lombok}:lombok"

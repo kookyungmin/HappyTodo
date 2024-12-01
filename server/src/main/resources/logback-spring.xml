@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <springProperty name="LOG_PATH_NAME" source="server.log.path"/>
-    <logger name="org.mybatis" level="INFO" />
-    <logger name="org.mybatis.spring" level="INFO" />
-    <logger name="org.mybatis.logging.jdbc" level="INFO" />
-    <logger name="jdbc.sqlonly" level="INFO" />
-    <logger name="jdbc.resultsettable" level="INFO" />
-    <logger name="jdbc.params" level="INFO" />
+
+    <logger name="com.zaxxer.hikari" level="WARN" />
 
     <!-- 콘솔 로그 설정 -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n</pattern>
+            <charset>utf-8</charset>
+            <Pattern>%d %highlight([%-5level]) [%thread] %magenta([%logger{36}]): %msg%n</Pattern>
         </encoder>
     </appender>
 
@@ -20,10 +17,11 @@
         <file>${LOG_PATH_NAME}/happytodo.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${LOG_PATH_NAME}/happytodo-%d{yyyy-MM-dd}.log</fileNamePattern>
-            <maxHistory>30</maxHistory> <!-- 30일간 로그 유지 -->
+            <maxHistory>30</maxHistory>
         </rollingPolicy>
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n</pattern>
+            <charset>utf-8</charset>
+            <Pattern>%d %highlight([%-5level]) [%thread] %magenta([%logger{36}]): %msg%n</Pattern>
         </encoder>
     </appender>
 

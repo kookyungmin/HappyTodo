@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="net.happytodo.domain.todo.dao.TodoDaoJdbc">
-    <select id="findAllDomain" resultType="net.happytodo.domain.todo.dto.Todo$Domain">
+<mapper namespace="net.happytodo.domain.todo.repository.TodoMapper">
+    <sql id="findDomain">
         select dmn.id,
                dmn.user_id,
                dmn.title,
@@ -11,7 +11,36 @@
                dmn.create_dt,
                dmn.update_dt
         from todo_domain dmn
-            inner join status s on dmn.status = s.id and s.type = 'todo'
+                 inner join status s on dmn.status = s.id
+            and s.type = 'todo'
         where dmn.is_del = 0
+    </sql>
+    <select id="findAllDomain" resultType="net.happytodo.domain.todo.dto.Todo$Domain">
+        <include refid="findDomain"></include>
     </select>
+    <select id="findDomainById" parameterType="int" resultType="net.happytodo.domain.todo.dto.Todo$Domain">
+        <include refid="findDomain"></include>
+            and dmn.id = #{id}
+    </select>
+    <insert id="persistDomain"
+            parameterType="net.happytodo.domain.todo.dto.Todo$Domain"
+            useGeneratedKeys="true"
+            keyProperty="id">
+        insert into todo_domain(user_id, title, content, status)
+        values(#{userId}, #{title}, #{content}, 0)
+    </insert>
+    <update id="updateDomain" parameterType="net.happytodo.domain.todo.dto.Todo$Domain">
+        update todo_domain
+        set title = #{title},
+            content = #{content},
+            status = #{status},
+            update_dt = now()
+        where id = #{id}
+    </update>
+    <delete id="deleteDomain" parameterType="int">
+        update todo_domain
+        set is_del = 1,
+            delete_dt = now()
+        where id = #{id}
+    </delete>
 </mapper>
