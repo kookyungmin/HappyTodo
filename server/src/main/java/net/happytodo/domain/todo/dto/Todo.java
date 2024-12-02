@@ -41,8 +41,6 @@ public class Todo {
     @AllArgsConstructor
     @Schema(description = "Todo 도메인 Request")
     public static class DomainRequest {
-        @Schema(description = "도메인 ID")
-        private int id;
         @Schema(description = "도메인 생성 유저 ID")
         private int userId; //TODO: User reference 로 변경
         @Schema(description = "도메인 제목")
@@ -54,7 +52,6 @@ public class Todo {
 
         public Domain toDomain() {
             return Todo.Domain.builder()
-                    .id(this.id)
                     .title(this.title)
                     .content(this.content)
                     .userId(this.userId)

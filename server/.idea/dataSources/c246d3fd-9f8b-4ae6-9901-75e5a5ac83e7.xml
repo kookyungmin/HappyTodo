@@ -954,7 +954,7 @@ id</ColNames>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
     <column id="290" parent="278" name="id">
-      <AutoIncrement>1</AutoIncrement>
+      <AutoIncrement>18</AutoIncrement>
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
@@ -966,6 +966,7 @@ id</ColNames>
     </column>
     <column id="292" parent="278" name="title">
       <DasType>varchar(64)|0s</DasType>
+      <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
     <column id="293" parent="278" name="content">
@@ -1082,7 +1083,7 @@ id</ColNames>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
     <column id="315" parent="280" name="id">
-      <AutoIncrement>1</AutoIncrement>
+      <AutoIncrement>3</AutoIncrement>
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
