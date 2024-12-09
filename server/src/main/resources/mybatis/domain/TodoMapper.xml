@@ -11,12 +11,19 @@
                dmn.create_dt,
                dmn.update_dt
         from todo_domain dmn
-                 inner join status s on dmn.status = s.id
-            and s.type = 'todo'
+                 inner join todo_status s on dmn.status = s.id
         where dmn.is_del = 0
     </sql>
-    <select id="findAllDomain" resultType="net.happytodo.domain.todo.dto.Todo$Domain">
+    <select id="findAllDomain"
+            parameterType="net.happytodo.domain.todo.dto.Todo$Condition"
+            resultType="net.happytodo.domain.todo.dto.Todo$Domain">
         <include refid="findDomain"></include>
+        <if test="status != null">
+            and status = #{status}
+        </if>
+        <if test="userId != null">
+            and user_id = #{userId}
+        </if>
     </select>
     <select id="findDomainById" parameterType="int" resultType="net.happytodo.domain.todo.dto.Todo$Domain">
         <include refid="findDomain"></include>
@@ -43,4 +50,10 @@
             delete_dt = now()
         where id = #{id}
     </delete>
+    <select id="findAllStatus" resultType="net.happytodo.domain.todo.dto.Todo$Status">
+        select id,
+               description,
+               icon
+        from todo_status
+    </select>
 </mapper>

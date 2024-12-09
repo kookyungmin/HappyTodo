@@ -5,11 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8e418e72-5e32-45c2-9007-ea1dfd657a05" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c246d3fd-9f8b-4ae6-9901-75e5a5ac83e7.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/c246d3fd-9f8b-4ae6-9901-75e5a5ac83e7.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/happytodo/domain/todo/controller/TodoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/happytodo/domain/todo/controller/TodoController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/happytodo/domain/todo/dto/Todo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/happytodo/domain/todo/dto/Todo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/happytodo/domain/todo/service/TodoServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/happytodo/domain/todo/service/TodoServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -155,7 +151,7 @@
       <option name="presentableId" value="Default" />
       <updated>1732455899330</updated>
       <workItem from="1732455900464" duration="14568000" />
-      <workItem from="1733041466577" duration="13303000" />
+      <workItem from="1733041466577" duration="13786000" />
     </task>
     <servers />
   </component>

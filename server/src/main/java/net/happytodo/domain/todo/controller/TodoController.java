@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
+import net.happytodo.core.exception.CustomException;
+import net.happytodo.core.exception.CustomExceptionCode;
 import net.happytodo.domain.todo.dto.Todo;
 import net.happytodo.domain.todo.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +26,12 @@ public class TodoController {
     private final TodoService todoService;
 
     @GetMapping("/domain")
-    @Operation(summary = "Todo 도메인 전체 리스트 목록 조회")
-    public ResponseEntity<List<Todo.DomainResponse>> getTodoDomainList() {
-        List<Todo.Domain> domainList = todoService.getTodoDomainList();
+    @Operation(summary = "Todo 도메인 조건 별 전체 리스트 목록 조회")
+    public ResponseEntity<List<Todo.DomainResponse>> getTodoDomainList(@RequestParam(name = "status", required = false) Integer status) {
+        List<Todo.Domain> domainList = todoService.getTodoDomainList(Todo.Condition.builder()
+                .userId(1)
+                .status(status)
+                .build());
 
         return ResponseEntity.ok(domainList.stream()
                 .map(Todo.Domain::toResponse)
@@ -59,5 +64,11 @@ public class TodoController {
         todoService.deleteTodoDomain(id);
 
         return ResponseEntity.status(NO_CONTENT).build();
+    }
+
+    @GetMapping("/status")
+    @Operation(summary = "Todo 상태 목록 조회")
+    public ResponseEntity<List<Todo.Status>> getTodoStatusList() {
+        return ResponseEntity.ok(todoService.getTodoStatusList());
     }
 }

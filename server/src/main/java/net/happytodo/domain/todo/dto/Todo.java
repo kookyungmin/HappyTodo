@@ -98,4 +98,25 @@ public class Todo {
         private LocalDateTime updateDt;
         private LocalDateTime createDt;
     }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class Status {
+        private int id;
+        private String description;
+        private String icon;
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class Condition {
+        private Integer status;
+        private Integer userId;
+    }
 }

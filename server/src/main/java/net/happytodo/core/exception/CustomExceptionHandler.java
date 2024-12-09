@@ -7,12 +7,17 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.METHOD_NOT_ALLOWED;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.springframework.http.HttpStatus.*;
 
 @ControllerAdvice
 public class CustomExceptionHandler {
+
     @ExceptionHandler(value = Exception.class)
     public ResponseEntity<ErrorResponse> handleInvalidInputException(Exception e,
                                                               HandlerMethod handlerMethod,
