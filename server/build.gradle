@@ -38,12 +38,15 @@ dependencies {
 
     implementation "${boot}:spring-boot-starter-web"
     implementation "${boot}:spring-boot-starter-jdbc"
+    implementation "${boot}:spring-boot-starter-security"
+
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
     implementation 'commons-io:commons-io:2.10.0'
     implementation 'org.apache.commons:commons-lang3:3.10'
     implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.5'
     implementation 'mysql:mysql-connector-java:8.0.33'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+    implementation 'com.google.code.gson:gson:2.10.1'
 
     testCompileOnly "${lombok}:lombok"
     testAnnotationProcessor "${lombok}:lombok"
