@@ -9,25 +9,27 @@ import net.happytodo.core.exception.CustomExceptionCode;
 import net.happytodo.core.exception.ErrorResponse;
 import net.happytodo.core.security.authentication.CustomAuthenticationToken;
 import net.happytodo.core.security.dto.User;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationServiceException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.context.SecurityContextRepository;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 import static net.happytodo.core.exception.CustomExceptionCode.FAILURE_UNAUTHORIZED;
 
 public class CustomUsernamePasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-    public CustomUsernamePasswordAuthenticationFilter(AuthenticationManager authenticationManager) {
+    public CustomUsernamePasswordAuthenticationFilter(AuthenticationManager authenticationManager,
+                                                      SecurityContextRepository securityContextRepository) {
         super(authenticationManager);
-        setFilterProcessesUrl("/api/login");
+        setSecurityContextRepository(securityContextRepository);
+        setFilterProcessesUrl("/api/security/login");
         setAuthenticationSuccessHandler(getAuthenticationSuccessHandler());
         setAuthenticationFailureHandler(getAuthenticationFailureHandler());
     }
@@ -53,7 +55,8 @@ public class CustomUsernamePasswordAuthenticationFilter extends UsernamePassword
 
     private AuthenticationSuccessHandler getAuthenticationSuccessHandler() {
         return (request, response, authentication) -> {
-            response.setContentType("application/json");
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            response.setCharacterEncoding(StandardCharsets.UTF_8.name());
             response.setStatus(HttpServletResponse.SC_OK);
             response.getWriter().write(new Gson().toJson(authentication.getPrincipal()));
         };
@@ -63,11 +66,12 @@ public class CustomUsernamePasswordAuthenticationFilter extends UsernamePassword
         return (request, response, exception) -> {
             ErrorResponse errorResponse = ErrorResponse.builder()
                     .errorCode(FAILURE_UNAUTHORIZED.getCode())
-                    .errorClassName(exception.getClass().getName())
+                    .errorClassName(CustomException.class.getName())
                     .errorMessage(FAILURE_UNAUTHORIZED.getMessage())
                     .httpStatusCode(FAILURE_UNAUTHORIZED.getHttpStatus().value())
                     .build();
-            response.setContentType("application/json");
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            response.setCharacterEncoding(StandardCharsets.UTF_8.name());
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write(new Gson().toJson(errorResponse));
         };
