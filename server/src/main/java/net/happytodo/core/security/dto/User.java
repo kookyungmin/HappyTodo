@@ -5,7 +5,6 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Set;
 
-
 //유저 정보
 public class User {
     @Getter
@@ -34,7 +33,7 @@ public class User {
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
-    public static class LoginInfo {
+    public static class UserAccount {
         private String email;
         private String name;
         private Set<GrantedAuthority> role;

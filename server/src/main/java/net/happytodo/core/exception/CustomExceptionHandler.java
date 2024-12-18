@@ -1,17 +1,18 @@
 package net.happytodo.core.exception;
 
+import com.google.gson.Gson;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.NoHandlerFoundException;
 
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -42,5 +43,19 @@ public class CustomExceptionHandler {
                     .httpStatusCode(httpStatus.value())
                     .build(), httpStatus);
         }
+    }
+
+    public static void writeSecurityExceptionResponse(HttpServletResponse response,
+                                                      CustomExceptionCode exceptionCode) throws IOException {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .errorCode(exceptionCode.getCode())
+                .errorClassName(CustomException.class.getName())
+                .errorMessage(exceptionCode.getMessage())
+                .httpStatusCode(exceptionCode.getHttpStatus().value())
+                .build();
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        response.setStatus(exceptionCode.getHttpStatus().value());
+        response.getWriter().write(new Gson().toJson(errorResponse));
     }
 }

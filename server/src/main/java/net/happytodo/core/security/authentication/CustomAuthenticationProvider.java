@@ -12,45 +12,47 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class CustomAuthenticationProvider implements AuthenticationProvider, InitializingBean {
-    private Map<String, User.LoginInfo> userDB = new ConcurrentHashMap<>();
+    private Map<String, User.UserAccount> userDB = new ConcurrentHashMap<>();
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        //token 발행이 일어남 (아이디 / 비밀번호 체크)
         CustomAuthenticationToken token = (CustomAuthenticationToken) authentication;
-
-        if (userDB.containsKey(token.getName())
-                && userDB.get(token.getName()).getPassword().equals(token.getCredentials())) {
-            return CustomAuthenticationToken.builder()
-                    .principal(User.Principal.builder()
-                            .email(userDB.get(token.getName()).getEmail())
-                            .name(userDB.get(token.getName()).getName())
-                            .role(userDB.get(token.getName()).getRole())
-                            .build())
-                    .credentials(token.getCredentials())
-                    .details(token.getDetails())
-                    .authenticated(true)
-                    .build();
+        //실질적인 인증 로직 -> 인증되었으면 token 발행 or null return
+        if (userDB.containsKey(token.getName())) {
+            User.UserAccount account = userDB.get(token.getName());
+            if (account.getPassword().equals(token.getCredentials())) {
+                //인증 성공
+                return CustomAuthenticationToken.builder()
+                        .principal(User.Principal.builder()
+                                .email(account.getEmail())
+                                .name(account.getName())
+                                .role(account.getRole())
+                                .build())
+                        .credentials(null)
+                        .details(token.getDetails())
+                        .authenticated(true)
+                        .build();
+            }
         }
-
+        //인증 실패
         return null;
     }
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return authentication == CustomAuthenticationToken.class;
+        return CustomAuthenticationToken.class == authentication;
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
-        userDB.put("rudals4549@naver.com", User.LoginInfo.builder()
+    public void afterPropertiesSet() {
+        userDB.put("rudals4549@naver.com", User.UserAccount.builder()
                 .email("rudals4549@naver.com")
                 .password("1234")
                 .role(Set.of(new SimpleGrantedAuthority("ROLE_USER")))
                 .name("유저")
                 .build());
 
-        userDB.put("bean@naver.com", User.LoginInfo.builder()
+        userDB.put("bean@naver.com", User.UserAccount.builder()
                 .email("bean@naver.com")
                 .password("1234")
                 .role(Set.of(new SimpleGrantedAuthority("ROLE_ADMIN")))

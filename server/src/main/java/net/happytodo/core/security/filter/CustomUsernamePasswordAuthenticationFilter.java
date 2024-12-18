@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import net.happytodo.core.exception.CustomException;
 import net.happytodo.core.exception.CustomExceptionCode;
-import net.happytodo.core.exception.ErrorResponse;
+import net.happytodo.core.exception.CustomExceptionHandler;
 import net.happytodo.core.security.authentication.CustomAuthenticationToken;
 import net.happytodo.core.security.dto.User;
 import org.springframework.http.MediaType;
@@ -22,16 +22,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
-import static net.happytodo.core.exception.CustomExceptionCode.FAILURE_UNAUTHORIZED;
+import static net.happytodo.core.exception.CustomExceptionCode.FAILURE_AUTHENTICATION;
 
 public class CustomUsernamePasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     public CustomUsernamePasswordAuthenticationFilter(AuthenticationManager authenticationManager,
                                                       SecurityContextRepository securityContextRepository) {
         super(authenticationManager);
-        setSecurityContextRepository(securityContextRepository);
         setFilterProcessesUrl("/api/security/login");
         setAuthenticationSuccessHandler(getAuthenticationSuccessHandler());
         setAuthenticationFailureHandler(getAuthenticationFailureHandler());
+        setSecurityContextRepository(securityContextRepository);
     }
 
     @Override
@@ -64,16 +64,8 @@ public class CustomUsernamePasswordAuthenticationFilter extends UsernamePassword
 
     private AuthenticationFailureHandler getAuthenticationFailureHandler() {
         return (request, response, exception) -> {
-            ErrorResponse errorResponse = ErrorResponse.builder()
-                    .errorCode(FAILURE_UNAUTHORIZED.getCode())
-                    .errorClassName(CustomException.class.getName())
-                    .errorMessage(FAILURE_UNAUTHORIZED.getMessage())
-                    .httpStatusCode(FAILURE_UNAUTHORIZED.getHttpStatus().value())
-                    .build();
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write(new Gson().toJson(errorResponse));
+            CustomExceptionHandler.writeSecurityExceptionResponse(response, FAILURE_AUTHENTICATION);
         };
     }
+
 }
