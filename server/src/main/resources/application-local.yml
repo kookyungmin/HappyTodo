@@ -8,4 +8,4 @@ spring:
       maximum-pool-size: 5
 server:
   log:
-    path: logs
+    path: /Users/kookyungmin/mypets/HappyTodo/server/logs
