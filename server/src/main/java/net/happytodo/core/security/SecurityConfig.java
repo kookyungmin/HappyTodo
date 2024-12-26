@@ -62,16 +62,16 @@ public class SecurityConfig {
     }
 
     private AuthenticationEntryPoint getAuthenticationEntryPoint() {
-        //인증 X API 접근(403 Forbidden)
+        //인증 X API 접근(401 UnAuthorized)
         return (request, response, authException) -> {
-            CustomExceptionHandler.writeSecurityExceptionResponse(response, USER_FORBIDDEN);
+            CustomExceptionHandler.writeSecurityExceptionResponse(response, USER_UNAUTHORIZED);
         };
     }
 
     private AccessDeniedHandler getAccessDeniedHandler() {
-        //인증 O 인가 X (401 Authorization)
+        //인증 O 인가 X (403 FOR_BIDDEN)
         return (request, response, accessDeniedException) -> {
-            CustomExceptionHandler.writeSecurityExceptionResponse(response, USER_UNAUTHORIZED);
+            CustomExceptionHandler.writeSecurityExceptionResponse(response, USER_FORBIDDEN);
         };
     }
 
