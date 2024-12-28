@@ -1,5 +1,6 @@
 package net.happytodo.core.security;
 
+import jakarta.servlet.http.HttpServletResponse;
 import net.happytodo.core.exception.CustomExceptionHandler;
 import net.happytodo.core.security.authentication.CustomAuthenticationProvider;
 import net.happytodo.core.security.filter.CustomUsernamePasswordAuthenticationFilter;
@@ -15,6 +16,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.web.cors.CorsConfiguration;
@@ -43,7 +45,11 @@ public class SecurityConfig {
             .addFilterBefore(new CustomUsernamePasswordAuthenticationFilter(authenticationManager, securityContextRepository),
                     UsernamePasswordAuthenticationFilter.class)
             .exceptionHandling(ex -> ex.accessDeniedHandler(getAccessDeniedHandler())
-            .authenticationEntryPoint(getAuthenticationEntryPoint()));
+            .authenticationEntryPoint(getAuthenticationEntryPoint()))
+            .logout(logout -> logout.logoutUrl("/api/security/logout")
+                .logoutSuccessHandler(getLogoutSuccessHandler())
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID"));
 
         return http.build();
     }
@@ -61,8 +67,15 @@ public class SecurityConfig {
         return new CustomAuthenticationProvider();
     }
 
+    private LogoutSuccessHandler getLogoutSuccessHandler() {
+        return ((request, response, authentication) -> {
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.getWriter().flush();
+        });
+    }
+
     private AuthenticationEntryPoint getAuthenticationEntryPoint() {
-        //인증 X API 접근(401 UnAuthorized)
+        //인증 X API 접근 (401 UnAuthorized)
         return (request, response, authException) -> {
             CustomExceptionHandler.writeSecurityExceptionResponse(response, USER_UNAUTHORIZED);
         };

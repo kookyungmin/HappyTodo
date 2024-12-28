@@ -1,6 +1,7 @@
 import { Navbar, Dropdown, Avatar } from "flowbite-react";
 import logo from '../assets/react.svg';
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import { logout } from "../service/SecurityService.js";
 
 const TodoNavLink = ({ to, text }) => {
     return (
@@ -13,6 +14,18 @@ const TodoNavLink = ({ to, text }) => {
 }
 
 export default function TodoNavbar() {
+    const navigate = useNavigate();
+
+    const logoutAction = async () => {
+        const { isError, data } = await logout();
+        if (isError) {
+            alert(data.errorMessage);
+            return;
+        }
+        alert('successful sign out!');
+        navigate('/login');
+    };
+
     return (
         <Navbar fluid rounded>
             <Navbar.Brand href={"/"}>
@@ -31,7 +44,7 @@ export default function TodoNavbar() {
                     <Dropdown.Header>
                         <span className="block text-sm">꾸리</span>
                     </Dropdown.Header>
-                    <Dropdown.Item>Sign out</Dropdown.Item>
+                    <Dropdown.Item onClick={logoutAction}>Sign out</Dropdown.Item>
                 </Dropdown>
                 <Navbar.Toggle />
             </div>

@@ -1,5 +1,6 @@
 package net.happytodo.core.security.authentication;
 
+import jakarta.annotation.PostConstruct;
 import net.happytodo.core.security.dto.User;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -11,7 +12,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class CustomAuthenticationProvider implements AuthenticationProvider, InitializingBean {
+public class CustomAuthenticationProvider implements AuthenticationProvider {
     private Map<String, User.UserAccount> userDB = new ConcurrentHashMap<>();
 
     @Override
@@ -24,6 +25,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider, Ini
                 //인증 성공
                 return CustomAuthenticationToken.builder()
                         .principal(User.Principal.builder()
+                                .id(account.getId())
                                 .email(account.getEmail())
                                 .name(account.getName())
                                 .role(account.getRole())
@@ -43,9 +45,10 @@ public class CustomAuthenticationProvider implements AuthenticationProvider, Ini
         return CustomAuthenticationToken.class == authentication;
     }
 
-    @Override
-    public void afterPropertiesSet() {
+    @PostConstruct
+    public void initialize() {
         userDB.put("rudals4549@naver.com", User.UserAccount.builder()
+                .id(1)
                 .email("rudals4549@naver.com")
                 .password("1234")
                 .role(Set.of(new SimpleGrantedAuthority("ROLE_USER")))
@@ -53,6 +56,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider, Ini
                 .build());
 
         userDB.put("bean@naver.com", User.UserAccount.builder()
+                .id(2)
                 .email("bean@naver.com")
                 .password("1234")
                 .role(Set.of(new SimpleGrantedAuthority("ROLE_ADMIN")))

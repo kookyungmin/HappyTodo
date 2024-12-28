@@ -3,9 +3,12 @@ package net.happytodo.domain.todo.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import net.happytodo.core.exception.CustomException;
 import net.happytodo.core.exception.CustomExceptionCode;
+import net.happytodo.core.security.dto.User;
+import net.happytodo.core.security.service.SecurityService;
 import net.happytodo.domain.todo.dto.Todo;
 import net.happytodo.domain.todo.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +27,14 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 @Tag(name = "todo", description="Todo 컨트롤러")
 public class TodoController {
     private final TodoService todoService;
+    private final SecurityService securityService;
 
     @GetMapping("/domain")
     @Operation(summary = "Todo 도메인 조건 별 전체 리스트 목록 조회")
     public ResponseEntity<List<Todo.DomainResponse>> getTodoDomainList(@RequestParam(name = "status", required = false) Integer status) {
+        User.Principal loginUser = securityService.getLoginUser().orElseThrow(() -> new CustomException(CustomExceptionCode.USER_UNAUTHORIZED));
         List<Todo.Domain> domainList = todoService.getTodoDomainList(Todo.Condition.builder()
-                .userId(1)
+                .userId(loginUser.getId())
                 .status(status)
                 .build());
 
