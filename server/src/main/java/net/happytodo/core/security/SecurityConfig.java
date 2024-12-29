@@ -23,6 +23,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 import java.util.Collections;
+import java.util.List;
 
 import static net.happytodo.core.exception.CustomExceptionCode.*;
 
@@ -30,11 +31,15 @@ import static net.happytodo.core.exception.CustomExceptionCode.*;
 @EnableWebSecurity(debug = true)
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
+    private final List<String> allowedRequestUrlList = List.of(
+        "/api/security/login",
+        "/api/security/login-user"
+    );
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http,
                                            AuthenticationManager authenticationManager,
                                            SecurityContextRepository securityContextRepository) throws Exception {
-        http.authorizeHttpRequests(auth -> auth.requestMatchers("/api/security/login")
+        http.authorizeHttpRequests(auth -> auth.requestMatchers(allowedRequestUrlList.toArray(String[]::new))
                 .permitAll()
                 .anyRequest()
                 .authenticated())

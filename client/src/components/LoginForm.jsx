@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { loginByEmailAndPassword } from "../service/SecurityService.js";
+import { loginByEmailAndPasswordAction } from "../service/SecurityService.js";
 
 export default function LoginForm({ onSuccess, onFailure }) {
     const [ email, setEmail ] = useState('');
@@ -18,7 +18,7 @@ export default function LoginForm({ onSuccess, onFailure }) {
             return;
         }
 
-        const { isError, data } = await loginByEmailAndPassword({ email, password });
+        const { isError, data } = await loginByEmailAndPasswordAction({ email, password });
         if (isError) {
             onFailure(data);
             return;

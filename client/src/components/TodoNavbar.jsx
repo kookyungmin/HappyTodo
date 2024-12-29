@@ -1,7 +1,9 @@
 import { Navbar, Dropdown, Avatar } from "flowbite-react";
 import logo from '../assets/react.svg';
 import {Link, useNavigate} from "react-router-dom";
-import { logout } from "../service/SecurityService.js";
+import { logoutAction } from "../service/SecurityService.js";
+import { useContext } from "react";
+import { UserContext } from "../context/UserContext.js";
 
 const TodoNavLink = ({ to, text }) => {
     return (
@@ -14,16 +16,18 @@ const TodoNavLink = ({ to, text }) => {
 }
 
 export default function TodoNavbar() {
+    const { loginUser, dispatch } = useContext(UserContext);
     const navigate = useNavigate();
 
-    const logoutAction = async () => {
-        const { isError, data } = await logout();
+    const logout = async () => {
+        const { isError, data } = await logoutAction();
         if (isError) {
             alert(data.errorMessage);
             return;
         }
         alert('successful sign out!');
-        navigate('/login');
+        dispatch({ type: 'setUser', payload: null })
+        navigate('/login')
     };
 
     return (
@@ -41,10 +45,21 @@ export default function TodoNavbar() {
                         <Avatar alt="User settings" img="https://flowbite.com/docs/images/people/profile-picture-5.jpg" rounded />
                     }
                 >
-                    <Dropdown.Header>
-                        <span className="block text-sm">꾸리</span>
-                    </Dropdown.Header>
-                    <Dropdown.Item onClick={logoutAction}>Sign out</Dropdown.Item>
+                    {loginUser?.id ?
+                        <>
+                            <Dropdown.Header>
+                                <span className="block text-sm">{loginUser.name}</span>
+                            </Dropdown.Header>
+                            <Dropdown.Item onClick={logout}>Sign out</Dropdown.Item>
+                        </>
+                        :
+                        <Dropdown.Item>
+                            <Link to={'/login'}>
+                                Sign in
+                            </Link>
+                        </Dropdown.Item>
+                    }
+
                 </Dropdown>
                 <Navbar.Toggle />
             </div>

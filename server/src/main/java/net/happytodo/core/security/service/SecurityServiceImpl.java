@@ -13,6 +13,7 @@ public class SecurityServiceImpl implements SecurityService {
     public Optional<User.Principal> getLoginUser() {
         return Optional.ofNullable(SecurityContextHolder.getContext())
                 .map(SecurityContext::getAuthentication)
+                .filter(authentication -> authentication.getPrincipal() instanceof User.Principal)
                 .map(authentication -> (User.Principal) authentication.getPrincipal());
     }
 }
