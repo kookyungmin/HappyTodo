@@ -28,7 +28,8 @@ export default function TodoList({ status }) {
             alert(data.errorMessage);
             return;
         }
-        console.log("####### ", data);
+        setTodoList([...todoList, data]);
+        setIsOpenAddModal(false);
     }
 
     useEffect(() => {
