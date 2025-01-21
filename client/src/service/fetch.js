@@ -3,7 +3,7 @@ export const fetchGet = async (url) => {
 }
 
 export const fetchPost = async (url, body = {}) => {
-    return _fetch(url, { method: 'POST', credentials: 'include', body: JSON.stringify(body) })
+    return _fetch(url, { method: 'POST', headers: { 'content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify(body) })
 }
 
 export const _fetch = async (url, requestInit) => {

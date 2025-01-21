@@ -46,8 +46,10 @@ public class TodoController {
     @PostMapping("/domain")
     @Operation(summary = "Todo 도메인 추가")
     public ResponseEntity<Todo.DomainResponse> addTodoDomain(@RequestBody Todo.DomainRequest request) {
-        Todo.DomainResponse response = todoService.addTodoDomain(request.toDomain()).toResponse();
+        User.Principal loginUser = securityService.getLoginUser().orElseThrow(() -> new CustomException(CustomExceptionCode.USER_UNAUTHORIZED));
+        request.setUserId(loginUser.getId());
 
+        Todo.DomainResponse response = todoService.addTodoDomain(request.toDomain()).toResponse();
         return ResponseEntity.status(CREATED).body(response);
     }
 
