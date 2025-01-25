@@ -2,12 +2,14 @@ import {Modal} from "flowbite-react";
 import { FaPlus } from "react-icons/fa";
 import { FaRegTrashAlt } from "react-icons/fa";
 import {removeTodoAction, saveTodoAction} from "../service/TodoService.js";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
+import {TodoListContext} from "../context/TodoContext.js";
 
 
-export default function TodoDetailModal({ openModal, onClose, todo, onChange, onRemove }) {
+export default function TodoDetailModal({ openModal, onClose, todo, }) {
     const [ title, setTitle ] = useState(todo.title);
     const [ isEditTitle, setIsEditTitle ] = useState(false);
+    const { dispatch } = useContext(TodoListContext);
 
     const removeTodo = async () => {
         if (!confirm('Are you sure to Remove?')) return;
@@ -16,7 +18,10 @@ export default function TodoDetailModal({ openModal, onClose, todo, onChange, on
             alert(`${data.errorMessage}`);
             return;
         }
-        onRemove(todo);
+        dispatch({
+            type: 'removeTodo',
+            payload: todo.id
+        })
         closeModal();
     };
 
@@ -37,7 +42,10 @@ export default function TodoDetailModal({ openModal, onClose, todo, onChange, on
             return;
         }
         setIsEditTitle(false);
-        onChange(data);
+        dispatch({
+            type: 'changeTodo',
+            payload: newTodo
+        })
     };
 
     const closeModal = () => {

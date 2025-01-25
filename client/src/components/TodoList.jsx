@@ -1,14 +1,15 @@
-import {useEffect, useState} from "react";
+import {useEffect, useReducer, useState} from "react";
 import {getTodoListAction} from "../service/TodoService.js";
 import TodoCard from "./TodoCard.jsx";
 import LoadPanel from "./LoadPanel.jsx";
 import TodoAddModal from "./TodoAddModal.jsx";
 import TodoDetailModal from "./TodoDetailModal.jsx";
-import {list} from "postcss";
+import {TodoListContext} from "../context/TodoContext.js";
+import TodoReducer from "../reducer/TodoReducer.js";
 
 export default function TodoList({ status }) {
+    const [ todoList, dispatch ] = useReducer(TodoReducer, []);
     const [ isLoading, setIsLoading ] = useState(false);
-    const [ todoList, setTodoList ] = useState([]);
     const [ isOpenAddModal, setIsOpenAddModal ] = useState(false);
     const [ isOpenDetailModal, setIsOpenDetailModal ] = useState(false);
     const [ currTodo, setCurrTodo ] = useState(null);
@@ -22,26 +23,11 @@ export default function TodoList({ status }) {
             alert(`ERROR !! >> ${data.errorMessage}`);
             return;
         }
-
-        setTodoList(data);
+        dispatch({
+            type: "setTodoList",
+            payload: data
+        });
     };
-
-    const addTodo = (data) => {
-        setTodoList([...todoList, data]);
-        setIsOpenAddModal(false);
-    };
-
-    const removeTodo = (data) => {
-        const index = todoList.findIndex(todo => todo.id === data.id);
-        if (index < 0) return;
-        setTodoList([...todoList.slice(0, index), ...todoList.slice(index + 1)]);
-    };
-
-    const changeTodo = (data) => {
-        const index = todoList.findIndex(todo => todo.id === data.id);
-        todoList[index] = data;
-        setTodoList([...todoList]);
-    }
 
     const clickTodoCard = (todo) => {
         setCurrTodo(todo);
@@ -53,7 +39,7 @@ export default function TodoList({ status }) {
     }, [ status ]);
 
     return (
-        <>
+        <TodoListContext.Provider value={{ todoList, dispatch }}>
             <LoadPanel isActive={isLoading} />
             <div className={'flex justify-end p-3'}>
                 <button type="button"
@@ -71,15 +57,12 @@ export default function TodoList({ status }) {
             })}
             <TodoAddModal openModal={isOpenAddModal}
                           status={status}
-                          onAdd={addTodo}
                           onClose={() => setIsOpenAddModal(false)} />
             {currTodo &&
                 <TodoDetailModal openModal={isOpenDetailModal}
                                  todo={currTodo}
-                                 onChange={changeTodo}
-                                 onRemove={removeTodo}
                                  onClose={() => setIsOpenDetailModal(false)} />
             }
-        </>
+        </TodoListContext.Provider>
     )
 }

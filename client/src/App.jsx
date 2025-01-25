@@ -7,7 +7,7 @@ import {getLoginUserAction} from "./service/SecurityService.js";
 import UserReducer from "./reducer/UserReducer.js";
 
 function App() {
-    const [ state, dispatch ] = useReducer(UserReducer, null);
+    const [ loginUser, dispatch ] = useReducer(UserReducer, null);
 
     const getLoginUser = async () => {
         const { isError, data } = await getLoginUserAction();
@@ -23,7 +23,7 @@ function App() {
     }, []);
 
     return (
-        <UserContext.Provider value={{ loginUser: state, dispatch }}>
+        <UserContext.Provider value={{ loginUser, dispatch }}>
             <TodoNavbar />
             <Outlet />
         </UserContext.Provider>

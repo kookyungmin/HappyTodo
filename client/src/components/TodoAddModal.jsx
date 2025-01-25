@@ -1,10 +1,12 @@
 import { Button, Modal } from "flowbite-react";
-import { useState } from "react";
+import {useContext, useState} from "react";
 import {addTodoAction} from "../service/TodoService.js";
+import {TodoListContext} from "../context/TodoContext.js";
 
-export default function TodoAddModal({ openModal, onClose, onAdd, status }) {
+export default function TodoAddModal({ openModal, onClose, status }) {
     const [ title, setTitle ] = useState('');
     const [ content, setContent ] = useState('');
+    const { dispatch } = useContext(TodoListContext);
 
     const clickAddBtn = async () => {
         const { isError, data } = await addTodoAction({ title, content, statusCode: status });
@@ -12,8 +14,8 @@ export default function TodoAddModal({ openModal, onClose, onAdd, status }) {
             alert(data.errorMessage);
             return;
         }
-        onAdd(data);
-        initialize();
+        dispatch({ type: 'addTodo', payload: data});
+        closeModal();
     };
 
     const closeModal = () => {
