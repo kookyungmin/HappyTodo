@@ -34,7 +34,7 @@
             useGeneratedKeys="true"
             keyProperty="id">
         insert into todo_domain(user_id, title, content, status)
-        values(#{userId}, #{title}, #{content}, 0)
+        values(#{userId}, #{title}, #{content}, #{statusCode})
     </insert>
     <update id="updateDomain" parameterType="net.happytodo.domain.todo.dto.Todo$Domain">
         update todo_domain
@@ -49,6 +49,12 @@
         set is_del = 1,
             delete_dt = now()
         where id = #{id}
+    </delete>
+    <delete id="deleteItemByDomainId" parameterType="int">
+        update todo_item
+        set is_del = 1,
+            delete_dt = now()
+        where domain_id = #{id}
     </delete>
     <select id="findAllStatus" resultType="net.happytodo.domain.todo.dto.Todo$Status">
         select id,

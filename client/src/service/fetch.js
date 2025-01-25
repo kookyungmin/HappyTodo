@@ -6,6 +6,14 @@ export const fetchPost = async (url, body = {}) => {
     return _fetch(url, { method: 'POST', headers: { 'content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify(body) })
 }
 
+export const fetchDelete = async (url) => {
+    return _fetch(url, { method: 'DELETE', credentials: 'include' });
+}
+
+export const fetchPut = async (url, body) => {
+    return _fetch(url, { method: 'PUT', credentials: 'include', headers: { 'content-Type': 'application/json' }, body: JSON.stringify(body)});
+}
+
 export const _fetch = async (url, requestInit) => {
     const res = await fetch(url, requestInit);
     let data = {}

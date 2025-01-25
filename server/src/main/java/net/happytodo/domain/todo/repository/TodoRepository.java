@@ -15,4 +15,6 @@ public interface TodoRepository {
     void deleteDomain(int id);
 
     List<Todo.Status> findAllStatus();
+
+    void deleteItemByDomainId(int id);
 }

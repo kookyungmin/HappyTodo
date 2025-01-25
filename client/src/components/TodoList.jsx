@@ -1,13 +1,17 @@
-import { useEffect, useState } from "react";
-import {addTodoAction, getTodoListAction} from "../service/TodoService.js";
+import {useEffect, useState} from "react";
+import {getTodoListAction} from "../service/TodoService.js";
 import TodoCard from "./TodoCard.jsx";
 import LoadPanel from "./LoadPanel.jsx";
 import TodoAddModal from "./TodoAddModal.jsx";
+import TodoDetailModal from "./TodoDetailModal.jsx";
+import {list} from "postcss";
 
 export default function TodoList({ status }) {
     const [ isLoading, setIsLoading ] = useState(false);
     const [ todoList, setTodoList ] = useState([]);
     const [ isOpenAddModal, setIsOpenAddModal ] = useState(false);
+    const [ isOpenDetailModal, setIsOpenDetailModal ] = useState(false);
+    const [ currTodo, setCurrTodo ] = useState(null);
 
     const getTodoList = async (status) => {
         setIsLoading(true);
@@ -22,15 +26,27 @@ export default function TodoList({ status }) {
         setTodoList(data);
     };
 
-    const addTodo = async (todo) => {
-        const { isError, data } = await addTodoAction(todo);
-        if (isError) {
-            alert(data.errorMessage);
-            return;
-        }
+    const addTodo = (data) => {
         setTodoList([...todoList, data]);
         setIsOpenAddModal(false);
+    };
+
+    const removeTodo = (data) => {
+        const index = todoList.findIndex(todo => todo.id === data.id);
+        if (index < 0) return;
+        setTodoList([...todoList.slice(0, index), ...todoList.slice(index + 1)]);
+    };
+
+    const changeTodo = (data) => {
+        const index = todoList.findIndex(todo => todo.id === data.id);
+        todoList[index] = data;
+        setTodoList([...todoList]);
     }
+
+    const clickTodoCard = (todo) => {
+        setCurrTodo(todo);
+        setIsOpenDetailModal(true);
+    };
 
     useEffect(() => {
         getTodoList(status);
@@ -49,13 +65,21 @@ export default function TodoList({ status }) {
             {!isLoading && todoList.map(todo => {
                 return (
                     <div key={todo.id} className={'flex justify-center mt-4'}>
-                        <TodoCard todo={todo} className={'cursor-pointer'}/>
+                        <TodoCard todo={todo} className={'cursor-pointer'} onClick={clickTodoCard}/>
                     </div>
                 )
             })}
             <TodoAddModal openModal={isOpenAddModal}
+                          status={status}
                           onAdd={addTodo}
                           onClose={() => setIsOpenAddModal(false)} />
+            {currTodo &&
+                <TodoDetailModal openModal={isOpenDetailModal}
+                                 todo={currTodo}
+                                 onChange={changeTodo}
+                                 onRemove={removeTodo}
+                                 onClose={() => setIsOpenDetailModal(false)} />
+            }
         </>
     )
 }

@@ -1,4 +1,4 @@
-import { fetchGet, fetchPost } from "./fetch.js";
+import {fetchDelete, fetchGet, fetchPost, fetchPut} from "./fetch.js";
 
 const serverHost = import.meta.env.VITE_SERVER_HOST;
 const TODO_API_URL = `${serverHost}/api/todo`
@@ -13,4 +13,12 @@ export const getTodoListAction = (status) => {
 
 export const addTodoAction = (todo) => {
     return fetchPost(`${TODO_API_URL}/domain`, todo);
+}
+
+export const removeTodoAction = (id) => {
+    return fetchDelete(`${TODO_API_URL}/domain/${id}`);
+}
+
+export const saveTodoAction = (todo) => {
+    return fetchPut(`${TODO_API_URL}/domain/${todo.id}`, todo);
 }
