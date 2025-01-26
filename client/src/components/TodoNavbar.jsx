@@ -2,8 +2,9 @@ import { Navbar, Dropdown, Avatar } from "flowbite-react";
 import logo from '../assets/react.svg';
 import {Link, useNavigate} from "react-router-dom";
 import { logoutAction } from "../service/SecurityService.js";
-import { useContext } from "react";
-import { UserContext } from "../context/UserContext.js";
+import UserStore from "../store/UserStore.js";
+// import { useContext } from "react";
+// import { UserContext } from "../context/UserContext.js";
 
 const TodoNavLink = ({ to, text }) => {
     return (
@@ -16,7 +17,8 @@ const TodoNavLink = ({ to, text }) => {
 }
 
 export default function TodoNavbar() {
-    const { loginUser, dispatch } = useContext(UserContext);
+    // const { loginUser, dispatch } = useContext(UserContext);
+    const { loginUser, setUser } = UserStore();
     const navigate = useNavigate();
 
     const logout = async () => {
@@ -26,7 +28,8 @@ export default function TodoNavbar() {
             return;
         }
         alert('successful sign out!');
-        dispatch({ type: 'setUser', payload: null })
+        // dispatch({ type: 'setUser', payload: null })
+        setUser(null);
         navigate('/login')
     };
 

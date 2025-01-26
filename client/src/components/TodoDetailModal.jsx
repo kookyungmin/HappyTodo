@@ -3,25 +3,28 @@ import { FaPlus } from "react-icons/fa";
 import { FaRegTrashAlt } from "react-icons/fa";
 import {removeTodoAction, saveTodoAction} from "../service/TodoService.js";
 import {useContext, useEffect, useState} from "react";
-import {TodoListContext} from "../context/TodoContext.js";
+import TodoStore from "../store/TodoStore.js";
+// import {TodoListContext} from "../context/TodoContext.js";
 
 
 export default function TodoDetailModal({ openModal, onClose, todo, }) {
     const [ title, setTitle ] = useState(todo.title);
     const [ isEditTitle, setIsEditTitle ] = useState(false);
-    const { dispatch } = useContext(TodoListContext);
+    // const { dispatch } = useContext(TodoListContext);
+    const { removeTodo, changeTodo } = TodoStore();
 
-    const removeTodo = async () => {
+    const remove = async () => {
         if (!confirm('Are you sure to Remove?')) return;
         const { isError, data } = await removeTodoAction(todo.id);
         if (isError) {
             alert(`${data.errorMessage}`);
             return;
         }
-        dispatch({
-            type: 'removeTodo',
-            payload: todo.id
-        })
+        // dispatch({
+        //     type: 'removeTodo',
+        //     payload: todo.id
+        // })
+        removeTodo(todo.id);
         closeModal();
     };
 
@@ -42,10 +45,11 @@ export default function TodoDetailModal({ openModal, onClose, todo, }) {
             return;
         }
         setIsEditTitle(false);
-        dispatch({
-            type: 'changeTodo',
-            payload: newTodo
-        })
+        // dispatch({
+        //     type: 'changeTodo',
+        //     payload: newTodo
+        // })
+        changeTodo(newTodo);
     };
 
     const closeModal = () => {
@@ -62,7 +66,7 @@ export default function TodoDetailModal({ openModal, onClose, todo, }) {
         setTitle(todo.title);
     };
 
-    return(
+    return (
         <>
             <Modal show={openModal} onClose={closeModal}>
                 <Modal.Header>
@@ -75,7 +79,7 @@ export default function TodoDetailModal({ openModal, onClose, todo, }) {
                         : <div onClick={() => setIsEditTitle(true)}>{title}</div>}
                     <div className={'text-gray-500 cursor-pointer'}
                          style={{ position: 'absolute', top: '25px', right: '65px' }}
-                         onClick={removeTodo}>
+                         onClick={remove}>
                         <FaRegTrashAlt />
                     </div>
                 </Modal.Header>

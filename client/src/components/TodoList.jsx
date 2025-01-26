@@ -4,11 +4,13 @@ import TodoCard from "./TodoCard.jsx";
 import LoadPanel from "./LoadPanel.jsx";
 import TodoAddModal from "./TodoAddModal.jsx";
 import TodoDetailModal from "./TodoDetailModal.jsx";
-import {TodoListContext} from "../context/TodoContext.js";
+// import {TodoListContext} from "../context/TodoContext.js";
 import TodoReducer from "../reducer/TodoReducer.js";
+import TodoStore from "../store/TodoStore.js";
 
 export default function TodoList({ status }) {
-    const [ todoList, dispatch ] = useReducer(TodoReducer, []);
+    // const [ todoList, dispatch ] = useReducer(TodoReducer, []);
+    const { todoList, setTodoList } = TodoStore();
     const [ isLoading, setIsLoading ] = useState(false);
     const [ isOpenAddModal, setIsOpenAddModal ] = useState(false);
     const [ isOpenDetailModal, setIsOpenDetailModal ] = useState(false);
@@ -23,10 +25,11 @@ export default function TodoList({ status }) {
             alert(`ERROR !! >> ${data.errorMessage}`);
             return;
         }
-        dispatch({
-            type: "setTodoList",
-            payload: data
-        });
+        // dispatch({
+        //     type: "setTodoList",
+        //     payload: data
+        // });
+        setTodoList(data);
     };
 
     const clickTodoCard = (todo) => {
@@ -39,7 +42,8 @@ export default function TodoList({ status }) {
     }, [ status ]);
 
     return (
-        <TodoListContext.Provider value={{ todoList, dispatch }}>
+        // <TodoListContext.Provider value={{ todoList, dispatch }}>
+        <>
             <LoadPanel isActive={isLoading} />
             <div className={'flex justify-end p-3'}>
                 <button type="button"
@@ -63,6 +67,7 @@ export default function TodoList({ status }) {
                                  todo={currTodo}
                                  onClose={() => setIsOpenDetailModal(false)} />
             }
-        </TodoListContext.Provider>
+        </>
+        // </TodoListContext.Provider>
     )
 }
