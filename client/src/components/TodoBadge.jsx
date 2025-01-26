@@ -1,12 +1,14 @@
 import {useContext} from "react";
-import {TodoStatusListContext} from "../context/TodoContext.js";
+import TodoStore from "../store/TodoStore.js";
+// import {TodoStatusListContext} from "../context/TodoContext.js";
 
 const colorList = [ 'blue', 'purple', 'green' ]
 export default function TodoStatusBadge({ status }) {
-    const statusList = useContext(TodoStatusListContext);
+    // const statusList = useContext(TodoStatusListContext);
+    const { todoStatusList } = TodoStore();
 
     const getStatusName = (status) => {
-        return statusList.filter(s => s.id === status)[0]?.description;
+        return todoStatusList.filter(s => s.id === status)[0]?.description;
     }
 
     return (
