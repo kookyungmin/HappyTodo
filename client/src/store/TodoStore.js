@@ -5,9 +5,9 @@ const TodoStore = create((set) => ({
     todoStatusList: [],
     setTodoStatusList: (todoStatusList) => set((state) => ({ todoStatusList, todoList: state.todoList })),
     setTodoList: (todoList) => set((state) => ({ todoList, todoStatusList: state.todoStatusList })),
-    addTodo: (todo) => set((state) => ({ todoList: [ ...state.todoList, todo ] })),
-    removeTodo: (id) => set((state) => ({ todoList: remove(state.todoList, id) })),
-    changeTodo: (todo) => set((state) => ({ todoList: update(state.todoList, todo) }))
+    addTodo: (todo) => set((state) => ({ todoList: [ ...state.todoList, todo ], todoStatusList: state.todoStatusList })),
+    removeTodo: (id) => set((state) => ({ todoList: remove(state.todoList, id), todoStatusList: state.todoStatusList })),
+    changeTodo: (todo) => set((state) => ({ todoList: update(state.todoList, todo), todoStatusList: state.todoStatusList }))
 }));
 
 const remove = (todoList, id) => {
