@@ -58,7 +58,7 @@ public class CustomUsernamePasswordAuthenticationFilter extends UsernamePassword
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             response.setCharacterEncoding(StandardCharsets.UTF_8.name());
             response.setStatus(HttpServletResponse.SC_OK);
-            response.getWriter().write(new Gson().toJson(authentication.getPrincipal()));
+            response.getWriter().write(new Gson().toJson(((User.Principal) authentication.getPrincipal()).toResponse()));
         };
     }
 

@@ -4,6 +4,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import net.happytodo.core.exception.CustomExceptionHandler;
 import net.happytodo.core.security.authentication.CustomAuthenticationProvider;
 import net.happytodo.core.security.filter.CustomUsernamePasswordAuthenticationFilter;
+import net.happytodo.core.security.service.SecurityService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.interceptor.CacheableOperation;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +14,8 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -35,6 +39,7 @@ public class SecurityConfig {
         "/api/security/login",
         "/api/security/login-user"
     );
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http,
                                            AuthenticationManager authenticationManager,
@@ -47,7 +52,7 @@ public class SecurityConfig {
             .httpBasic(httpBasic -> httpBasic.disable())
             .csrf(csrf -> csrf.disable())
             .cors(cors -> cors.configurationSource(configurationSource()))
-            .addFilterBefore(new CustomUsernamePasswordAuthenticationFilter(authenticationManager, securityContextRepository),
+            .addFilterAt(new CustomUsernamePasswordAuthenticationFilter(authenticationManager, securityContextRepository),
                     UsernamePasswordAuthenticationFilter.class)
             .exceptionHandling(ex -> ex.accessDeniedHandler(getAccessDeniedHandler())
             .authenticationEntryPoint(getAuthenticationEntryPoint()))
@@ -68,8 +73,9 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider() {
-        return new CustomAuthenticationProvider();
+    public AuthenticationProvider authenticationProvider(PasswordEncoder passwordEncoder,
+                                                         SecurityService securityService) {
+        return new CustomAuthenticationProvider(securityService, passwordEncoder);
     }
 
     private LogoutSuccessHandler getLogoutSuccessHandler() {
@@ -111,9 +117,8 @@ public class SecurityConfig {
         return new HttpSessionSecurityContextRepository();
     }
 
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
-//
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }

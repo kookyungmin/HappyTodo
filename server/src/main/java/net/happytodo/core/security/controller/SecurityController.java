@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class SecurityController {
     private final SecurityService securityService;
     @GetMapping("/login-user")
-    public ResponseEntity<User.Principal> getLoginUser() {
-        return ResponseEntity.ok(securityService.getLoginUser().orElse(null));
+    public ResponseEntity<User.UserResponse> getLoginUser() {
+        return ResponseEntity.ok(securityService.getLoginUser()
+                .map(User.Principal::toResponse).orElse(null));
     }
 }

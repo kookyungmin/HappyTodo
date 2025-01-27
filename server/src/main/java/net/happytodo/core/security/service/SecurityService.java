@@ -6,4 +6,6 @@ import java.util.Optional;
 
 public interface SecurityService {
     Optional<User.Principal> getLoginUser();
+
+    User.UserAccount loadUserByUsername(String name);
 }
