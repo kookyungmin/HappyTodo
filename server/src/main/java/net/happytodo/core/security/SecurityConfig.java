@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import net.happytodo.core.exception.CustomExceptionHandler;
 import net.happytodo.core.security.authentication.CustomAuthenticationProvider;
 import net.happytodo.core.security.filter.CustomUsernamePasswordAuthenticationFilter;
+import net.happytodo.core.security.service.CustomRememberMeService;
 import net.happytodo.core.security.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.interceptor.CacheableOperation;
@@ -22,13 +23,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
+import javax.sql.DataSource;
 import java.util.Collections;
 import java.util.List;
 
@@ -46,6 +51,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http,
                                            AuthenticationManager authenticationManager,
+                                           RememberMeServices rememberMeServices,
                                            SecurityContextRepository securityContextRepository) throws Exception {
         http.authorizeHttpRequests(auth -> auth.requestMatchers(allowedRequestUrlList.toArray(String[]::new))
                 .permitAll()
@@ -55,8 +61,11 @@ public class SecurityConfig {
             .httpBasic(httpBasic -> httpBasic.disable())
             .csrf(csrf -> csrf.disable())
             .cors(cors -> cors.configurationSource(configurationSource()))
-            .addFilterAt(new CustomUsernamePasswordAuthenticationFilter(authenticationManager, securityContextRepository),
+            .addFilterAt(new CustomUsernamePasswordAuthenticationFilter(authenticationManager,
+                            rememberMeServices,
+                            securityContextRepository),
                     UsernamePasswordAuthenticationFilter.class)
+            .rememberMe(r -> r.rememberMeServices(rememberMeServices))
             .exceptionHandling(ex -> ex.accessDeniedHandler(getAccessDeniedHandler())
             .authenticationEntryPoint(getAuthenticationEntryPoint()))
             .logout(logout -> logout.logoutUrl("/api/security/logout")
@@ -125,5 +134,25 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public RememberMeServices rememberMeServices(UserDetailsService userDetailsService,
+                                                 PersistentTokenRepository tokenRepository) {
+        return new CustomRememberMeService("uniqueAndSecretKey", userDetailsService, tokenRepository);
+    }
+
+    @Bean
+    public PersistentTokenRepository tokenRepository(DataSource dataSource) {
+        JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
+        jdbcTokenRepository.setDataSource(dataSource);
+
+        try {
+            jdbcTokenRepository.removeUserTokens("test");
+        } catch (Exception e) {
+            jdbcTokenRepository.setCreateTableOnStartup(true);
+        }
+
+        return jdbcTokenRepository;
     }
 }

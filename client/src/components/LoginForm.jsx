@@ -4,6 +4,7 @@ import { loginByEmailAndPasswordAction } from "../service/SecurityService.js";
 export default function LoginForm({ onSuccess, onFailure }) {
     const [ email, setEmail ] = useState('');
     const [ password, setPassword ] = useState('');
+    const [ rememberMe, setRememberMe ] = useState(false);
 
     const login = async (event) => {
         event.preventDefault();
@@ -18,7 +19,7 @@ export default function LoginForm({ onSuccess, onFailure }) {
             return;
         }
 
-        const { isError, data } = await loginByEmailAndPasswordAction({ email, password });
+        const { isError, data } = await loginByEmailAndPasswordAction({ email, password, rememberMe });
         if (isError) {
             onFailure(data);
             return;
@@ -50,7 +51,8 @@ export default function LoginForm({ onSuccess, onFailure }) {
             </div>
             <div className="flex items-start mb-5">
                 <div className="flex items-center h-5">
-                    <input id="remember" type="checkbox" value=""
+                    <input id="remember" type="checkbox" value={rememberMe}
+                           onChange={(event) => setRememberMe(event.target.checked)}
                            className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800" />
                 </div>
                 <label htmlFor="remember" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">

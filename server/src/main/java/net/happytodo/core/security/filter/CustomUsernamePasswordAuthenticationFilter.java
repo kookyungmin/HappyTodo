@@ -16,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.context.SecurityContextRepository;
 
@@ -27,12 +28,14 @@ import static net.happytodo.core.exception.CustomExceptionCode.FAILURE_AUTHENTIC
 
 public class CustomUsernamePasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     public CustomUsernamePasswordAuthenticationFilter(AuthenticationManager authenticationManager,
+                                                      RememberMeServices rememberMeServices,
                                                       SecurityContextRepository securityContextRepository) {
         super(authenticationManager);
         setFilterProcessesUrl("/api/security/login");
         setAuthenticationSuccessHandler(getAuthenticationSuccessHandler());
         setAuthenticationFailureHandler(getAuthenticationFailureHandler());
         setSecurityContextRepository(securityContextRepository);
+        setRememberMeServices(rememberMeServices);
     }
 
     @Override
@@ -41,6 +44,8 @@ public class CustomUsernamePasswordAuthenticationFilter extends UsernamePassword
         ObjectMapper objectMapper = new ObjectMapper();
         try (InputStream inputStream = request.getInputStream()) {
             User.LoginRequest loginRequest = objectMapper.readValue(inputStream, User.LoginRequest.class);
+            request.setAttribute("rememberMe", loginRequest.isRememberMe());
+
             return this.getAuthenticationManager().authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
         } catch (IOException e) {
             throw new CustomException(CustomExceptionCode.NOT_SUPPORTED_CONTENT_TYPE);

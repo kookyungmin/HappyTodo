@@ -38,6 +38,7 @@ public class User {
     public static class LoginRequest {
         private String email;
         private String password;
+        private boolean rememberMe;
     }
 
     @Getter
@@ -63,7 +64,7 @@ public class User {
 
         @Override
         public String getUsername() {
-            return name;
+            return email;
         }
 
         public UserResponse toResponse() {
