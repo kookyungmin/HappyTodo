@@ -1,26 +1,20 @@
 package net.happytodo.core.security.authentication;
 
-import jakarta.annotation.PostConstruct;
 import net.happytodo.core.security.dto.User;
 import net.happytodo.core.security.service.SecurityService;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 //    private Map<String, User.UserAccount> userDB = new ConcurrentHashMap<>();
-    private final SecurityService securityService;
+    private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
-    public CustomAuthenticationProvider(SecurityService securityService,
+    public CustomAuthenticationProvider(UserDetailsService userDetailsService,
                                         PasswordEncoder passwordEncoder) {
-        this.securityService = securityService;
+        this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -28,13 +22,13 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         CustomAuthenticationToken token = (CustomAuthenticationToken) authentication;
         //실질적인 인증 로직 -> 인증되었으면 token 발행 or null return
-        User.UserAccount account = securityService.loadUserByUsername(token.getName());
+        User.UserAccount account = (User.UserAccount) userDetailsService.loadUserByUsername(token.getName());
 
         if (account != null
             && passwordEncoder.matches(token.getCredentials(), account.getPassword())) {
             //인증 성공
                 return CustomAuthenticationToken.builder()
-                        .principal(User.Principal.builder()
+                        .principal(User.UserAccount.builder()
                                 .id(account.getId())
                                 .email(account.getEmail())
                                 .name(account.getName())

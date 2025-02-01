@@ -32,7 +32,7 @@ public class TodoController {
     @GetMapping("/domain")
     @Operation(summary = "Todo 도메인 조건 별 전체 리스트 목록 조회")
     public ResponseEntity<List<Todo.DomainResponse>> getTodoDomainList(@RequestParam(name = "status", required = false) Integer status) {
-        User.Principal loginUser = securityService.getLoginUser().orElseThrow(() -> new CustomException(CustomExceptionCode.USER_UNAUTHORIZED));
+        User.UserAccount loginUser = securityService.getLoginUser().orElseThrow(() -> new CustomException(CustomExceptionCode.USER_UNAUTHORIZED));
         List<Todo.Domain> domainList = todoService.getTodoDomainList(Todo.Condition.builder()
                 .userId(loginUser.getId())
                 .status(status)
@@ -46,7 +46,7 @@ public class TodoController {
     @PostMapping("/domain")
     @Operation(summary = "Todo 도메인 추가")
     public ResponseEntity<Todo.DomainResponse> addTodoDomain(@RequestBody Todo.DomainRequest request) {
-        User.Principal loginUser = securityService.getLoginUser().orElseThrow(() -> new CustomException(CustomExceptionCode.USER_UNAUTHORIZED));
+        User.UserAccount loginUser = securityService.getLoginUser().orElseThrow(() -> new CustomException(CustomExceptionCode.USER_UNAUTHORIZED));
         request.setUserId(loginUser.getId());
 
         Todo.DomainResponse response = todoService.addTodoDomain(request.toDomain()).toResponse();

@@ -16,13 +16,13 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 public class CustomAuthenticationToken implements Authentication {
-    private User.Principal principal;
+    private User.UserAccount principal;
     private boolean authenticated;
     private String credentials;
     private String details;
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Optional.ofNullable(principal)
-                .map(User.Principal::getRole)
+                .map(User.UserAccount::getRole)
                 .orElse(Set.of());
     }
 
@@ -30,7 +30,7 @@ public class CustomAuthenticationToken implements Authentication {
     public String getName() {
         //UsernamePasswordAuthenticationFilter 에서는 ID -> username 라고 부르기에 getName 도 ID 가 되어야한다.
         return Optional.ofNullable(principal)
-                .map(User.Principal::getEmail)
+                .map(User.UserAccount::getEmail)
                 .orElse(null);
     }
 }

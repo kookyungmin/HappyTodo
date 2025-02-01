@@ -5,7 +5,6 @@ import net.happytodo.core.security.dto.User;
 import java.util.Optional;
 
 public interface SecurityService {
-    Optional<User.Principal> getLoginUser();
+    Optional<User.UserAccount> getLoginUser();
 
-    User.UserAccount loadUserByUsername(String name);
 }

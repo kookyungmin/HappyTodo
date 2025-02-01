@@ -1,7 +1,6 @@
 package net.happytodo.core.security.constant;
 
 import lombok.RequiredArgsConstructor;
-import net.happytodo.core.security.dto.User;
 
 import java.util.Arrays;
 
