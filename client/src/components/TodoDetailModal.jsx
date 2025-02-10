@@ -1,9 +1,10 @@
 import {Modal} from "flowbite-react";
-import { FaPlus } from "react-icons/fa";
+import { FaPlus, FaPlusCircle } from "react-icons/fa";
 import { FaRegTrashAlt } from "react-icons/fa";
 import {removeTodoAction, saveTodoAction} from "../service/TodoService.js";
 import {useContext, useEffect, useState} from "react";
 import TodoStore from "../store/TodoStore.js";
+import FileUploader from "./FileUploader.jsx";
 // import {TodoListContext} from "../context/TodoContext.js";
 
 
@@ -95,6 +96,15 @@ export default function TodoDetailModal({ openModal, onClose, todo, }) {
                             Add Item
                         </li>
                     </ul>
+                    <h2 className={'text-xl mt-4'}>Files</h2>
+                    <hr className={'mb-4'}/>
+                    <FileUploader multiple={true}
+                                  onUploaded={(data) => {console.log("##### ", data)}}
+                                  onError={(data) => alert(data.errorMessage)}>
+                        <div className={'w-[100px] h-[100px] flex items-center justify-center cursor-pointer border-2 rounded-md'}>
+                            <FaPlusCircle className={'text-xl'}/>
+                        </div>
+                    </FileUploader>
                 </Modal.Body>
             </Modal>
         </>

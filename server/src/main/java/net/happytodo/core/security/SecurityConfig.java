@@ -40,7 +40,7 @@ import java.util.List;
 import static net.happytodo.core.exception.CustomExceptionCode.*;
 
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity(debug = false)
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
     private final List<String> allowedRequestUrlList = List.of(

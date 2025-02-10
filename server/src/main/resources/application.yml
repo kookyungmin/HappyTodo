@@ -9,3 +9,10 @@ jasypt:
 logging:
   level:
     root: DEBUG
+spring:
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 500MB
+file:
+  upload-path: /Users/kookyungmin/test/todo
