@@ -1,16 +1,18 @@
 import {Modal} from "flowbite-react";
 import { FaPlus, FaPlusCircle } from "react-icons/fa";
 import { FaRegTrashAlt } from "react-icons/fa";
-import {removeTodoAction, saveTodoAction} from "../service/TodoService.js";
+import {addTodoFileAction, getTodoFilesAction, removeTodoAction, saveTodoAction} from "../service/TodoService.js";
 import {useContext, useEffect, useState} from "react";
 import TodoStore from "../store/TodoStore.js";
 import FileUploader from "./FileUploader.jsx";
+import {FILE_API_URL} from "../service/FileService.js";
 // import {TodoListContext} from "../context/TodoContext.js";
 
 
-export default function TodoDetailModal({ openModal, onClose, todo, }) {
+export default function TodoDetailModal({ openModal, onClose, todo }) {
     const [ title, setTitle ] = useState(todo.title);
     const [ isEditTitle, setIsEditTitle ] = useState(false);
+    const [ files, setFiles ] = useState([]);
     // const { dispatch } = useContext(TodoListContext);
     const { removeTodo, changeTodo } = TodoStore();
 
@@ -58,6 +60,16 @@ export default function TodoDetailModal({ openModal, onClose, todo, }) {
         onClose();
     };
 
+    const uploadTodoFiles = async (uploadedFiles) => {
+        uploadedFiles.forEach(file => file.domainId = todo.id);
+        const { data, isError } = await addTodoFileAction(uploadedFiles);
+        if (isError) {
+            alert(data.errorMessage);
+            return;
+        }
+        setFiles([...files, ...uploadedFiles]);
+    };
+
     useEffect(() => {
         initialize();
     }, [ todo ]);
@@ -65,7 +77,17 @@ export default function TodoDetailModal({ openModal, onClose, todo, }) {
     const initialize = () => {
         setIsEditTitle(false);
         setTitle(todo.title);
+        getTodoFiles();
     };
+
+    const getTodoFiles = async () => {
+        const { data, isError } = await getTodoFilesAction(todo.id);
+        if (isError) {
+            alert(data.errorMessage);
+            return;
+        }
+        setFiles(data);
+    }
 
     return (
         <>
@@ -98,13 +120,22 @@ export default function TodoDetailModal({ openModal, onClose, todo, }) {
                     </ul>
                     <h2 className={'text-xl mt-4'}>Files</h2>
                     <hr className={'mb-4'}/>
-                    <FileUploader multiple={true}
-                                  onUploaded={(data) => {console.log("##### ", data)}}
-                                  onError={(data) => alert(data.errorMessage)}>
-                        <div className={'w-[100px] h-[100px] flex items-center justify-center cursor-pointer border-2 rounded-md'}>
-                            <FaPlusCircle className={'text-xl'}/>
-                        </div>
-                    </FileUploader>
+                    <div className={'flex'}>
+                        <FileUploader multiple={true}
+                                      onUploaded={uploadTodoFiles}
+                                      onError={(data) => alert(data.errorMessage)}>
+                            <div className={'w-[100px] h-[100px] flex items-center justify-center cursor-pointer border-2 rounded-md mr-2'}>
+                                <FaPlusCircle className={'text-xl'}/>
+                            </div>
+                        </FileUploader>
+                        {files.map(file =>
+                            (
+                                <div key={file.id} className={'w-[100px] h-[100px] flex items-center justify-center cursor-pointer border-2 rounded-md mr-2'}>
+                                    <img src={`${FILE_API_URL}/image/${file?.uniqueFileName}`} alt={file.fileName} />
+                                </div>
+                            )
+                        )}
+                    </div>
                 </Modal.Body>
             </Modal>
         </>

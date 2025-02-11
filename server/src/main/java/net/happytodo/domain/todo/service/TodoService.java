@@ -14,4 +14,8 @@ public interface TodoService {
     void deleteTodoDomain(int id);
 
     List<Todo.Status> getTodoStatusList();
+
+    void addTodoFiles(List<Todo.File> todoFiles);
+
+    List<Todo.File> getTodoFiles(int id);
 }

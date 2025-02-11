@@ -11,6 +11,18 @@ public class Todo {
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
+    public static class File {
+        private int domainId;
+        private int id;
+        private String uniqueFileName;
+        private String fileName;
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
     public static class Domain {
         private int id;
         private int userId; //TODO: User reference 로 변경

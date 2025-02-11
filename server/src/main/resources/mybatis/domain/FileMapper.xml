@@ -2,10 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="net.happytodo.core.file.repository.FileMapper">
     <insert id="persistFileInfo"
-            parameterType="net.happytodo.core.file.dto.TodoFile$Domain"
+            parameterType="net.happytodo.core.file.dto.FileInfo$Domain"
             useGeneratedKeys="true"
             keyProperty="id">
-        insert into todo_file(writer_id, file_name, dir_path, sys_file_name, type, size)
+        insert into file(writer_id, file_name, dir_path, sys_file_name, type, size)
         values(#{writerId}, #{fileName}, #{dirPath}, #{sysFileName}, #{type}, #{size})
     </insert>
+    <select id="findByUniqueFileName" parameterType="java.lang.String" resultType="net.happytodo.core.file.dto.FileInfo$Domain">
+        select writer_id as writerId,
+               file_name as fileName,
+               dir_path as dirPath,
+               sys_file_name as sysFileName,
+               type,
+               size
+        from file
+        where sys_file_name = #{uniqueFileName}
+    </select>
 </mapper>

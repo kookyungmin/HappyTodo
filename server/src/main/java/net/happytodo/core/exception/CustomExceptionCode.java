@@ -12,6 +12,7 @@ public enum CustomExceptionCode {
     FAILURE_AUTHENTICATION("S003", HttpStatus.BAD_REQUEST, "인증 정보가 틀렸습니다."),
     USER_UNAUTHORIZED("S004", HttpStatus.UNAUTHORIZED, "로그인 후 사용 가능합니다."),
     USER_FORBIDDEN("S005", HttpStatus.FORBIDDEN, "권한이 없습니다."),
+    FILE_NOT_FOUND("F001", HttpStatus.NOT_FOUND, "파일이 존재하지 않습니다."),
     ;
 
     private final String code;

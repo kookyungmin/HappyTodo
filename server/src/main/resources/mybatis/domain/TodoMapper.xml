@@ -62,4 +62,19 @@
                icon
         from todo_status
     </select>
+    <insert id="persistFiles" parameterType="net.happytodo.domain.todo.dto.Todo$File">
+        insert into todo_file_mapping(file_id, domain_id)
+        <foreach collection="list" item="file" open="values" separator=",">
+            (#{file.id}, #{file.domainId})
+        </foreach>
+    </insert>
+    <select id="findAllFiles" resultType="net.happytodo.domain.todo.dto.Todo$File" parameterType="int">
+        select f.id,
+               f.sys_file_name as uniqueFileName,
+               f.file_name as fileName,
+               tf.domain_id as domainId
+        from file f
+            inner join todo_file_mapping tf on f.id = tf.file_id
+        where tf.domain_id = #{id}
+    </select>
 </mapper>

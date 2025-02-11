@@ -22,3 +22,11 @@ export const removeTodoAction = (id) => {
 export const saveTodoAction = (todo) => {
     return fetchPut(`${TODO_API_URL}/domain/${todo.id}`, todo);
 }
+
+export const addTodoFileAction = (todoFiles) => {
+    return fetchPost(`${TODO_API_URL}/files`, todoFiles);
+}
+
+export const getTodoFilesAction = (id) => {
+    return fetchGet(`${TODO_API_URL}/${id}/files`);
+}
