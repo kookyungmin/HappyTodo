@@ -13,6 +13,7 @@ public enum CustomExceptionCode {
     USER_UNAUTHORIZED("S004", HttpStatus.UNAUTHORIZED, "로그인 후 사용 가능합니다."),
     USER_FORBIDDEN("S005", HttpStatus.FORBIDDEN, "권한이 없습니다."),
     FILE_NOT_FOUND("F001", HttpStatus.NOT_FOUND, "파일이 존재하지 않습니다."),
+    JWT_NOT_VALID("S006", HttpStatus.BAD_REQUEST, "JWT가 올바르지 않거나 만료되었습니다."),
     ;
 
     private final String code;

@@ -16,3 +16,5 @@ spring:
       max-file-size: 500MB
 file:
   upload-path: /Users/kookyungmin/test/todo
+jwt:
+  atk-expired-time: 1800
