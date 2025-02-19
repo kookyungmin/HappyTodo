@@ -17,4 +17,6 @@ spring:
 file:
   upload-path: /Users/kookyungmin/test/todo
 jwt:
-  atk-expired-time: 1800
+#  atk-expired-time: 1800
+  atk-expired-time: 5
+  rtk-expired-time: 1209600

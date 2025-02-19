@@ -69,7 +69,9 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .exceptionHandling(ex -> ex.accessDeniedHandler(getAccessDeniedHandler())
             .authenticationEntryPoint(getAuthenticationEntryPoint()))
-            .logout(logout -> logout.logoutUrl("/api/security/logout"));
+            .logout(logout -> logout.logoutUrl("/api/security/logout")
+                    .logoutSuccessHandler(getLogoutSuccessHandler())
+                    .deleteCookies("rtk"));
 
         return http.build();
     }

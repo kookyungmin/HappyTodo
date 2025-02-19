@@ -22,11 +22,11 @@ export default function TodoNavbar() {
     const navigate = useNavigate();
 
     const logout = async () => {
-        // const { isError, data } = await logoutAction();
-        // if (isError) {
-        //     alert(data.errorMessage);
-        //     return;
-        // }
+        const { isError, data } = await logoutAction();
+        if (isError) {
+            alert(data.errorMessage);
+            return;
+        }
         sessionStorage.clear();
         alert('successful sign out!');
         // dispatch({ type: 'setUser', payload: null })
