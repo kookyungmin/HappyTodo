@@ -5,7 +5,7 @@ import {addTodoFileAction, getTodoFilesAction, removeTodoAction, saveTodoAction}
 import {useContext, useEffect, useState} from "react";
 import TodoStore from "../store/TodoStore.js";
 import FileUploader from "./FileUploader.jsx";
-import {FILE_API_URL} from "../service/FileService.js";
+import {FILE_API_URL, getImageAction} from "../service/FileService.js";
 // import {TodoListContext} from "../context/TodoContext.js";
 
 
@@ -61,7 +61,10 @@ export default function TodoDetailModal({ openModal, onClose, todo }) {
     };
 
     const uploadTodoFiles = async (uploadedFiles) => {
-        uploadedFiles.forEach(file => file.domainId = todo.id);
+        uploadedFiles.forEach(async (file) => {
+            file.domainId = todo.id;
+            file.blob = await getImageBlob(file);
+        });
         const { data, isError } = await addTodoFileAction(uploadedFiles);
         if (isError) {
             alert(data.errorMessage);
@@ -72,12 +75,12 @@ export default function TodoDetailModal({ openModal, onClose, todo }) {
 
     useEffect(() => {
         initialize();
+        getTodoFiles();
     }, [ todo ]);
 
     const initialize = () => {
         setIsEditTitle(false);
         setTitle(todo.title);
-        getTodoFiles();
     };
 
     const getTodoFiles = async () => {
@@ -86,7 +89,29 @@ export default function TodoDetailModal({ openModal, onClose, todo }) {
             alert(data.errorMessage);
             return;
         }
+        for(let f of data) {
+            if (f.blob) continue;
+            const blob = await getImageBlob(f);
+            f.blob = blob;
+        }
         setFiles(data);
+    }
+
+    const getImageBlob = async (file) => {
+        const { data, isError } = await getImageAction(file?.uniqueFileName);
+        if (isError) {
+            alert(data.errorMessage);
+            return;
+        }
+        const reader = new FileReader();
+
+        await new Promise((resolve, reject) => {
+            reader.onload = resolve;
+            reader.onerror = reject;
+            reader.readAsDataURL(data);
+        });
+
+        return reader.result;
     }
 
     return (
@@ -131,7 +156,7 @@ export default function TodoDetailModal({ openModal, onClose, todo }) {
                         {files.map(file =>
                             (
                                 <div key={file.id} className={'w-[100px] h-[100px] flex items-center justify-center cursor-pointer border-2 rounded-md mr-2'}>
-                                    <img src={`${FILE_API_URL}/image/${file?.uniqueFileName}`} alt={file.fileName} />
+                                    <img src={file.blob} alt={file.fileName} />
                                 </div>
                             )
                         )}
