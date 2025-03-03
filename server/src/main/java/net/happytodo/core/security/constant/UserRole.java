@@ -17,9 +17,20 @@ public enum UserRole {
         return str;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public static UserRole getUserRoleById(int id) {
         return Arrays.stream(UserRole.values())
                 .filter(r -> r.id == id)
+                .findAny()
+                .orElse(USER);
+    }
+
+    public static UserRole getUserRoleByStr(String str) {
+        return Arrays.stream(UserRole.values())
+                .filter(r -> r.str.equals(str))
                 .findAny()
                 .orElse(USER);
     }

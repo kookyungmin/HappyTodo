@@ -6,6 +6,7 @@ import net.happytodo.core.security.authentication.CustomAuthenticationProvider;
 import net.happytodo.core.security.filter.CustomUsernamePasswordAuthenticationFilter;
 import net.happytodo.core.security.filter.JwtAuthenticationFilter;
 import net.happytodo.core.security.filter.JwtVerifyFilter;
+import net.happytodo.core.security.oauth2.CustomOauth2SuccessHandler;
 import net.happytodo.core.security.service.CustomRememberMeService;
 import net.happytodo.core.security.service.JwtService;
 import net.happytodo.core.security.service.SecurityService;
@@ -50,13 +51,16 @@ import static net.happytodo.core.exception.CustomExceptionCode.*;
 public class SecurityConfig {
     private final List<String> allowedRequestUrlList = List.of(
         "/api/security/login",
-        "/api/security/login-user"
+        "/api/security/login-user",
+        "/error",
+        "/api/oauth2/**"
     );
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http,
                                            JwtAuthenticationFilter jwtAuthenticationFilter,
-                                           JwtVerifyFilter jwtVerifyFilter) throws Exception {
+                                           JwtVerifyFilter jwtVerifyFilter,
+                                           CustomOauth2SuccessHandler customOauth2SuccessHandler) throws Exception {
         http.authorizeHttpRequests(auth -> auth.requestMatchers(allowedRequestUrlList.toArray(String[]::new))
                 .permitAll()
                 .anyRequest()
@@ -69,11 +73,21 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .exceptionHandling(ex -> ex.accessDeniedHandler(getAccessDeniedHandler())
             .authenticationEntryPoint(getAuthenticationEntryPoint()))
+            .oauth2Login(oauth2 -> oauth2.authorizationEndpoint(authorizationEndpointConfig -> authorizationEndpointConfig.baseUri("/api/oauth2/authorization"))
+                    .redirectionEndpoint(redirectionEndpointConfig -> redirectionEndpointConfig.baseUri("/api/oauth2/*/callback"))
+                    .successHandler(customOauth2SuccessHandler)
+            )
             .logout(logout -> logout.logoutUrl("/api/security/logout")
                     .logoutSuccessHandler(getLogoutSuccessHandler())
                     .deleteCookies("rtk"));
 
         return http.build();
+    }
+
+    @Bean
+    public CustomOauth2SuccessHandler customOauth2SuccessHandler(SecurityService securityService,
+                                                                 JwtService jwtService) {
+        return new CustomOauth2SuccessHandler(securityService, jwtService);
     }
 
     @Bean

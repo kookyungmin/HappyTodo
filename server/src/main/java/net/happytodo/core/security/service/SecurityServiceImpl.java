@@ -23,6 +23,17 @@ public class SecurityServiceImpl implements SecurityService, UserDetailsService 
     }
 
     @Override
+    public User.UserAccount loadUserByGoogleId(String googleId) {
+        return securityRepository.findUserByGoogleId(googleId);
+    }
+
+    @Override
+    public User.UserAccount joinUser(User.UserAccount user) {
+        securityRepository.persistUser(user);
+        return user;
+    }
+
+    @Override
     public User.UserAccount loadUserByUsername(String username) {
         return securityRepository.findUserByEmail(username);
     }

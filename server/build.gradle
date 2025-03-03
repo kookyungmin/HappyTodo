@@ -39,6 +39,7 @@ dependencies {
     implementation "${boot}:spring-boot-starter-web"
     implementation "${boot}:spring-boot-starter-jdbc"
     implementation "${boot}:spring-boot-starter-security"
+    implementation "${boot}:spring-boot-starter-oauth2-client"
 
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
     implementation 'commons-io:commons-io:2.10.0'

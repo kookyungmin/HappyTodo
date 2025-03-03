@@ -12,5 +12,21 @@
         where email = #{email}
             and status = 0
     </select>
-
+    <select id="findUserByGoogleId" parameterType="java.lang.String"
+        resultType="net.happytodo.core.security.dto.User$UserAccount">
+        select id,
+               nickname as name,
+               email,
+               auth as role
+        from user
+        where google_id = #{googleId}
+            and status = 0
+    </select>
+    <insert id="persistUser"
+            parameterType="net.happytodo.core.security.dto.User$UserAccount"
+            useGeneratedKeys="true"
+            keyProperty="id">
+        insert into user(nickname, email, auth, google_id, status)
+        values(#{name}, #{email}, #{roleId}, #{googleId}, 0)
+    </insert>
 </mapper>

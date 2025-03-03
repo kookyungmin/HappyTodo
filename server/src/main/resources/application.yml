@@ -14,6 +14,17 @@ spring:
     multipart:
       enabled: true
       max-file-size: 500MB
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ENC(c7mUelq8jY95ypMcEwFWdgTP0XGHMbqkAvXwQAW1K9EjSdWKNZIGmeRFmmQDO3h8QzqhaOHa1wqoWrkNdDeONPV7mFehCe/4iAeZ4PRWOqGklWXNj4oCHhT7U/H8Is96)
+            client-secret: ENC(2MCwO76pzHWUU4ZJ5Q1TenqlL4N6T/3w+sv1MZazangGuaJm+EwmRpmkC88hHOuuNyGq5H34hj8=)
+            scope:
+              - email
+              - profile
+            redirect-uri: "{baseUrl}/api/oauth2/{registrationId}/callback"
 file:
   upload-path: /Users/kookyungmin/test/todo
 jwt:

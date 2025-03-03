@@ -50,11 +50,17 @@ public class User {
         private int id;
         private String email;
         private String name;
+        private String googleId;
         private Set<GrantedAuthority> role;
         private String password;
 
         public void setRole(int roleId) {
             this.role = Set.of(new SimpleGrantedAuthority(UserRole.getUserRoleById(roleId).toString()));
+        }
+
+        public int getRoleId() {
+            String roleStr = role.stream().collect(Collectors.toList()).get(0).getAuthority();
+            return UserRole.getUserRoleByStr(roleStr).getId();
         }
 
         @Override

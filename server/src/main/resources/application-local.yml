@@ -9,3 +9,5 @@ spring:
 server:
   log:
     path: /Users/kookyungmin/mypets/HappyTodo/server/logs
+oauth2:
+  client-host: http://localhost:5173
