@@ -51,6 +51,7 @@ public class User {
         private String email;
         private String name;
         private String googleId;
+        private String kakaoId;
         private Set<GrantedAuthority> role;
         private String password;
 

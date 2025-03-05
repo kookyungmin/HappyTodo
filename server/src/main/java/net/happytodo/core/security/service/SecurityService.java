@@ -10,4 +10,6 @@ public interface SecurityService {
     User.UserAccount loadUserByGoogleId(String googleId);
 
     User.UserAccount joinUser(User.UserAccount build);
+
+    User.UserAccount loadUserByKakaoId(String kakaoId);
 }

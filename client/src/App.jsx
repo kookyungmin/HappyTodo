@@ -9,13 +9,15 @@ import UserStore from "./store/UserStore.js";
 
 function App() {
     // const [ loginUser, dispatch ] = useReducer(UserReducer, null);
-    const [ searchParams ] = useSearchParams();
+    const [ searchParams, setSearchParams ] = useSearchParams();
     const { setUser } = UserStore();
     const navigate = useNavigate();
 
     const getLoginUser = async () => {
         if (searchParams?.get("atk")) {
             sessionStorage.setItem("atk", searchParams?.get("atk"));
+            searchParams.delete("atk");
+            setSearchParams(searchParams);
         }
         const { isError, data } = await getLoginUserAction();
         if (isError) {

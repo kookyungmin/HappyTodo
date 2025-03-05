@@ -34,7 +34,12 @@ public class SecurityServiceImpl implements SecurityService, UserDetailsService 
     }
 
     @Override
+    public User.UserAccount loadUserByKakaoId(String kakaoId) {
+        return securityRepository.findUserByKakaoId(kakaoId);
+    }
+
+    @Override
     public User.UserAccount loadUserByUsername(String username) {
-        return securityRepository.findUserByEmail(username);
+        return securityRepository.findUserByUsername(username);
     }
 }
