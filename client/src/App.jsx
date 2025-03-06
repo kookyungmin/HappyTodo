@@ -6,6 +6,8 @@ import { getLoginUserAction } from "./service/SecurityService.js";
 // import { UserContext } from "./context/UserContext.js";
 import UserReducer from "./reducer/UserReducer.js";
 import UserStore from "./store/UserStore.js";
+import {APIProvider} from "@vis.gl/react-google-maps";
+const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
 function App() {
     // const [ loginUser, dispatch ] = useReducer(UserReducer, null);
@@ -34,8 +36,10 @@ function App() {
 
     return (
         <>
-            <TodoNavbar />
-            <Outlet />
+            <APIProvider apiKey={apiKey}>
+                <TodoNavbar />
+                <Outlet />
+            </APIProvider>
         </>
         // <UserContext.Provider value={{ loginUser, dispatch }}>
         //     <TodoNavbar />
