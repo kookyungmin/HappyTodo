@@ -11,3 +11,5 @@ server:
     path: /app/todo/server/logs
 oauth2:
   client-host: http://localhost:5173
+file:
+  upload-path: /app/todo/server/upload

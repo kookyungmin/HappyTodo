@@ -9574,3 +9574,76 @@ Caused by: java.lang.ClassNotFoundException: org.apache.catalina.core.Applicatio
 	at org.springframework.boot.loader.launch.LaunchedClassLoader.loadClass(LaunchedClassLoader.java:91)
 	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:525)
 	... 18 common frames omitted
+2025-03-16 16:01:41,314 [39m[DEBUG][0;39m [SpringApplicationShutdownHook] [35m[o.s.b.a.ApplicationAvailabilityBean][0;39m: Application availability state ReadinessState changed from ACCEPTING_TRAFFIC to REFUSING_TRAFFIC
+2025-03-16 16:01:41,316 [39m[DEBUG][0;39m [SpringApplicationShutdownHook] [35m[o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext][0;39m: Closing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@488eb7f2, started on Sun Mar 16 11:35:47 KST 2025
+2025-03-16 16:01:41,324 [39m[DEBUG][0;39m [SpringApplicationShutdownHook] [35m[o.s.c.s.DefaultLifecycleProcessor][0;39m: Stopping beans in phase 2147483647
+2025-03-16 16:01:41,325 [39m[DEBUG][0;39m [SpringApplicationShutdownHook] [35m[o.s.c.s.DefaultLifecycleProcessor][0;39m: Bean 'applicationTaskExecutor' completed its stop procedure
+2025-03-16 16:01:41,325 [39m[DEBUG][0;39m [SpringApplicationShutdownHook] [35m[o.s.c.s.DefaultLifecycleProcessor][0;39m: Stopping beans in phase 2147482623
+2025-03-16 16:01:41,325 [31m[WARN ][0;39m [SpringApplicationShutdownHook] [35m[o.s.c.s.DefaultLifecycleProcessor][0;39m: Failed to stop bean 'webServerGracefulShutdown'
+java.lang.NoClassDefFoundError: org/springframework/boot/web/server/GracefulShutdownCallback
+	at org.springframework.boot.web.context.WebServerGracefulShutdownLifecycle.stop(WebServerGracefulShutdownLifecycle.java:62)
+	at org.springframework.context.support.DefaultLifecycleProcessor.doStop(DefaultLifecycleProcessor.java:346)
+	at org.springframework.context.support.DefaultLifecycleProcessor$LifecycleGroup.stop(DefaultLifecycleProcessor.java:488)
+	at java.base/java.lang.Iterable.forEach(Iterable.java:75)
+	at org.springframework.context.support.DefaultLifecycleProcessor.stopBeans(DefaultLifecycleProcessor.java:315)
+	at org.springframework.context.support.DefaultLifecycleProcessor.onClose(DefaultLifecycleProcessor.java:215)
+	at org.springframework.context.support.AbstractApplicationContext.doClose(AbstractApplicationContext.java:1148)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.doClose(ServletWebServerApplicationContext.java:174)
+	at org.springframework.context.support.AbstractApplicationContext.close(AbstractApplicationContext.java:1102)
+	at org.springframework.boot.SpringApplicationShutdownHook.closeAndWait(SpringApplicationShutdownHook.java:145)
+	at java.base/java.lang.Iterable.forEach(Iterable.java:75)
+	at org.springframework.boot.SpringApplicationShutdownHook.run(SpringApplicationShutdownHook.java:114)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+Caused by: java.lang.ClassNotFoundException: org.springframework.boot.web.server.GracefulShutdownCallback
+	at java.base/java.net.URLClassLoader.findClass(URLClassLoader.java:445)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:592)
+	at org.springframework.boot.loader.net.protocol.jar.JarUrlClassLoader.loadClass(JarUrlClassLoader.java:107)
+	at org.springframework.boot.loader.launch.LaunchedClassLoader.loadClass(LaunchedClassLoader.java:91)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:525)
+	... 13 common frames omitted
+2025-03-16 16:01:41,326 [39m[DEBUG][0;39m [SpringApplicationShutdownHook] [35m[o.s.c.s.DefaultLifecycleProcessor][0;39m: Stopping beans in phase 2147481599
+2025-03-16 16:01:41,332 [31m[WARN ][0;39m [SpringApplicationShutdownHook] [35m[o.s.c.s.DefaultLifecycleProcessor][0;39m: Failed to stop bean 'webServerStartStop'
+java.lang.NoClassDefFoundError: org/apache/catalina/Lifecycle$SingleUse
+	at org.apache.catalina.util.LifecycleBase.stop(LifecycleBase.java:243)
+	at org.apache.catalina.core.StandardService.removeConnector(StandardService.java:299)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.lambda$removeServiceConnectors$1(TomcatWebServer.java:173)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.doWithConnectors(TomcatWebServer.java:192)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.removeServiceConnectors(TomcatWebServer.java:170)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.stop(TomcatWebServer.java:358)
+	at org.springframework.boot.web.servlet.context.WebServerStartStopLifecycle.stop(WebServerStartStopLifecycle.java:53)
+	at org.springframework.context.SmartLifecycle.stop(SmartLifecycle.java:117)
+	at org.springframework.context.support.DefaultLifecycleProcessor.doStop(DefaultLifecycleProcessor.java:346)
+	at org.springframework.context.support.DefaultLifecycleProcessor$LifecycleGroup.stop(DefaultLifecycleProcessor.java:488)
+	at java.base/java.lang.Iterable.forEach(Iterable.java:75)
+	at org.springframework.context.support.DefaultLifecycleProcessor.stopBeans(DefaultLifecycleProcessor.java:315)
+	at org.springframework.context.support.DefaultLifecycleProcessor.onClose(DefaultLifecycleProcessor.java:215)
+	at org.springframework.context.support.AbstractApplicationContext.doClose(AbstractApplicationContext.java:1148)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.doClose(ServletWebServerApplicationContext.java:174)
+	at org.springframework.context.support.AbstractApplicationContext.close(AbstractApplicationContext.java:1102)
+	at org.springframework.boot.SpringApplicationShutdownHook.closeAndWait(SpringApplicationShutdownHook.java:145)
+	at java.base/java.lang.Iterable.forEach(Iterable.java:75)
+	at org.springframework.boot.SpringApplicationShutdownHook.run(SpringApplicationShutdownHook.java:114)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+Caused by: java.lang.ClassNotFoundException: org.apache.catalina.Lifecycle$SingleUse
+	at java.base/java.net.URLClassLoader.findClass(URLClassLoader.java:445)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:592)
+	at org.springframework.boot.loader.net.protocol.jar.JarUrlClassLoader.loadClass(JarUrlClassLoader.java:107)
+	at org.springframework.boot.loader.launch.LaunchedClassLoader.loadClass(LaunchedClassLoader.java:91)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:525)
+	... 20 common frames omitted
+2025-03-16 16:01:41,332 [39m[DEBUG][0;39m [SpringApplicationShutdownHook] [35m[o.s.c.s.DefaultLifecycleProcessor][0;39m: Stopping beans in phase -2147483647
+2025-03-16 16:01:41,333 [39m[DEBUG][0;39m [SpringApplicationShutdownHook] [35m[o.s.c.s.DefaultLifecycleProcessor][0;39m: Bean 'springBootLoggingLifecycle' completed its stop procedure
+2025-03-16 16:01:41,333 [39m[DEBUG][0;39m [SpringApplicationShutdownHook] [35m[o.s.s.c.ThreadPoolTaskExecutor][0;39m: Shutting down ExecutorService 'applicationTaskExecutor'
+Exception in thread "SpringApplicationShutdownHook" java.lang.NoClassDefFoundError: org/apache/catalina/Lifecycle$SingleUse
+	at org.apache.catalina.util.LifecycleBase.stop(LifecycleBase.java:243)
+	at org.apache.catalina.startup.Tomcat.stop(Tomcat.java:447)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.stopTomcat(TomcatWebServer.java:301)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.destroy(TomcatWebServer.java:374)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.doClose(ServletWebServerApplicationContext.java:177)
+	at org.springframework.context.support.AbstractApplicationContext.close(AbstractApplicationContext.java:1102)
+	at org.springframework.boot.SpringApplicationShutdownHook.closeAndWait(SpringApplicationShutdownHook.java:145)
+	at java.base/java.lang.Iterable.forEach(Iterable.java:75)
+	at org.springframework.boot.SpringApplicationShutdownHook.run(SpringApplicationShutdownHook.java:114)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+Caused by: java.lang.ClassNotFoundException: org.apache.catalina.Lifecycle$SingleUse
+	... 10 more
